@@ -2,6 +2,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div id="Arena" style="width:500px;height:500px;"></div>
 
 @section scripts
 {
@@ -9,6 +10,40 @@
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
         $(function () {
+            var fightHub = $.connection.fightArenaHub;
+            
+            fightHub.client.newUser = function (connectionId) {
+                console.log("new user " + connectionId);
+                createElement(connectionId);
+            };
+
+            fightHub.client.moveUser = function (connectionId, x, y) {
+                var user = document.getElementById(connectionId);
+                user.style.left = x + "px";
+                user.style.top  = y + "px";
+            }
+
+            var createElement = function (connectionId) {
+                connectionId = connectionId || "myself";
+                var indicator = document.createElement("div");
+                indicator.style.cssText = "position:absolute;background-color:red;";
+                indicator.textContent = connectionId;
+                indicator.id = connectionId;
+                document.getElementById("Arena").appendChild(indicator);
+                return indicator;
+            };
+
+            var indicator = createElement();
+            document.getElementById("Arena").onmousemove = function () {
+                fightHub.server.moveUser(event.clientX, event.clientY);
+
+                indicator.style.left = event.clientX + "px";
+                indicator.style.top = event.clientY + "px";
+            };
+            
+            $.connection.hub.start().done(function () {
+                fightHub.server.register();
+            });
         });
     </script>
 }

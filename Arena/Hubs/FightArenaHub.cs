@@ -8,5 +8,14 @@ namespace Arena.Hubs
 {
     public class FightArenaHub : Hub
     {
+        public void Register()
+        {
+            Clients.AllExcept(Context.ConnectionId).NewUser(Context.ConnectionId);
+        }
+
+        public void MoveUser(int x, int y)
+        {
+            Clients.AllExcept(Context.ConnectionId).MoveUser(Context.ConnectionId, x, y);
+        }
     }
 }
