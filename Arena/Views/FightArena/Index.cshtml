@@ -49,7 +49,7 @@
                 fightHub.server.register();
 
                 var indicator = createElement();
-                arena.onmousemove = function () {
+                arena.onmousedown = function () {
                     fightHub.server.moveUser(event.clientX, event.clientY);
 
                     indicator.style.left = event.clientX + "px";
