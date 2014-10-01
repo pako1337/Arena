@@ -26,6 +26,7 @@
 
             fightHub.client.moveUser = function (connectionId, x, y) {
                 var user = document.getElementById(connectionId);
+                if (user == undefined || user == null) return;
                 user.style.left = x + "px";
                 user.style.top  = y + "px";
             }
@@ -40,20 +41,20 @@
                 return indicator;
             };
 
-            var indicator = createElement();
-            arena.onmousemove = function () {
-                fightHub.server.moveUser(event.clientX, event.clientY);
-
-                indicator.style.left = event.clientX + "px";
-                indicator.style.top = event.clientY + "px";
-            };
-
             window.onbeforeunload = function () {
                 $.connection.hub.stop();
             }
             
             $.connection.hub.start().done(function () {
                 fightHub.server.register();
+
+                var indicator = createElement();
+                arena.onmousemove = function () {
+                    fightHub.server.moveUser(event.clientX, event.clientY);
+
+                    indicator.style.left = event.clientX + "px";
+                    indicator.style.top = event.clientY + "px";
+                };
             });
         });
     </script>
