@@ -17,5 +17,11 @@ namespace Arena.Hubs
         {
             Clients.AllExcept(Context.ConnectionId).MoveUser(Context.ConnectionId, x, y);
         }
+
+        public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
+        {
+            Clients.All.UserExit(Context.ConnectionId);
+            return base.OnDisconnected(stopCalled);
+        }
     }
 }
