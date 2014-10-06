@@ -2,7 +2,7 @@
     baseUrl: "/Scripts/FightArena"
 });
 
-require(["Arena"], function (util) {
+require(["Arena"], function (Arena) {
     var fightHub = $.connection.fightArenaHub;
     var arenaElement = document.getElementById("Arena");
 
