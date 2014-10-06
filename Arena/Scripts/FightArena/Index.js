@@ -1,4 +1,8 @@
-﻿$(function () {
+﻿requirejs.config({
+    baseUrl: "/Scripts/FightArena"
+});
+
+require(["Arena"], function (util) {
     var fightHub = $.connection.fightArenaHub;
     var arenaElement = document.getElementById("Arena");
 
