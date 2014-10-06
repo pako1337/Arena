@@ -1,34 +1,22 @@
 ﻿$(function () {
     var fightHub = $.connection.fightArenaHub;
-    var arena = document.getElementById("Arena");
+    var arenaElement = document.getElementById("Arena");
+
+    arena = new Arena(arenaElement)
 
     fightHub.client.newUser = function (connectionId) {
         console.log("new user " + connectionId);
-        createElement(connectionId);
+        arena.addPlayer(connectionId);
     };
 
     fightHub.client.userExit = function (connectionId) {
         console.log("user disconnected " + connectionId);
-        var user = document.getElementById(connectionId);
-        arena.removeChild(user);
+        arena.removePlayer(connectionId);
     }
 
     fightHub.client.moveUser = function (connectionId, x, y) {
-        var user = document.getElementById(connectionId);
-        if (user == undefined || user == null) return;
-        user.style.left = x + "px";
-        user.style.top = y + "px";
+        arena.movePlayer(connectionId, x, y);
     }
-
-    var createElement = function (connectionId) {
-        connectionId = connectionId || "myself";
-        var indicator = document.createElement("div");
-        indicator.style.cssText = "position:absolute;background-color:red;";
-        indicator.textContent = connectionId;
-        indicator.id = connectionId;
-        arena.appendChild(indicator);
-        return indicator;
-    };
 
     window.onbeforeunload = function () {
         $.connection.hub.stop();
@@ -37,12 +25,10 @@
     $.connection.hub.start().done(function () {
         fightHub.server.register();
 
-        var indicator = createElement();
-        arena.onmousedown = function () {
+        var indicator = arena.addPlayer("myself");
+        arenaElement.onmousedown = function () {
             fightHub.server.moveUser(event.clientX, event.clientY);
-
-            indicator.style.left = event.clientX + "px";
-            indicator.style.top = event.clientY + "px";
+            arena.movePlayer("myself", event.clientX, event.clientY);
         };
     });
 });
