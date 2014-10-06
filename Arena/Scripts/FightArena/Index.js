@@ -1,8 +1,20 @@
 ﻿requirejs.config({
-    baseUrl: "/Scripts/FightArena"
+    baseUrl: "/Scripts/FightArena",
+    paths: {
+        "signalr.core": "/Scripts/jquery.signalR-2.1.2",
+        "signalr.hubs": "/signalr/hubs?" // needs ? to avoid requireJs automatically adding extension
+    },
+    shim: {
+        "signalr.core": {
+            exports: "$.connection"
+        },
+        "signalr.hubs": {
+            deps: ["signalr.core"]
+        }
+    }
 });
 
-require(["Arena"], function (Arena) {
+require(["signalr.hubs", "Arena"], function (_hub, Arena) {
     var fightHub = $.connection.fightArenaHub;
     var arenaElement = document.getElementById("Arena");
 
