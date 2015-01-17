@@ -15,15 +15,22 @@ namespace Arena.Hubs
 
         public void Register()
         {
+            List<string> presentUsers = null;
             bool lockTaken = false;
             try
             {
                 _lock.Enter(ref lockTaken);
+                presentUsers = _users.ToList();
                 _users.Add(Context.ConnectionId);
             }
             finally
             {
                 if (lockTaken) _lock.Exit();
+            }
+
+            if (presentUsers != null)
+            {
+                presentUsers.ForEach(u => Clients.Client(Context.ConnectionId).NewUser(u));
             }
 
             Clients.AllExcept(Context.ConnectionId).NewUser(Context.ConnectionId);
