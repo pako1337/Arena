@@ -4,21 +4,27 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Arena.Hubs
 {
     public class FightArenaHub : Hub
     {
-        private static ConcurrentBag<string> _users = new ConcurrentBag<string>();
+        private SpinLock _lock = new SpinLock();
+        private static List<string> _users = new List<string>();
 
         public void Register()
         {
-            _users.Add(Context.ConnectionId);
-
-            _users.ToList()
-                .Where(u => u != Context.ConnectionId)
-                .Select(u => Clients.Client(Context.ConnectionId).NewUser(u))
-                .ToList();
+            bool lockTaken = false;
+            try
+            {
+                _lock.Enter(ref lockTaken);
+                _users.Add(Context.ConnectionId);
+            }
+            finally
+            {
+                if (lockTaken) _lock.Exit();
+            }
 
             Clients.AllExcept(Context.ConnectionId).NewUser(Context.ConnectionId);
         }
@@ -30,6 +36,18 @@ namespace Arena.Hubs
 
         public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
         {
+            bool lockTaken = false;
+            try
+            {
+                _lock.Enter(ref lockTaken);
+                if (_users.Contains(Context.ConnectionId))
+                    _users.Remove(Context.ConnectionId);
+            }
+            finally
+            {
+                if (lockTaken) _lock.Exit();
+            }
+
             Clients.All.UserExit(Context.ConnectionId);
             return base.OnDisconnected(stopCalled);
         }

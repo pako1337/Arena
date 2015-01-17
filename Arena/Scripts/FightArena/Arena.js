@@ -14,7 +14,7 @@
             var user = document.getElementById(id);
             if (user == undefined || user == null) return;
             user.style.left = x + "px";
-            user.style.top = y + "px";
+            user.style.top  = y + "px";
         };
 
         var createElement = function (id) {
