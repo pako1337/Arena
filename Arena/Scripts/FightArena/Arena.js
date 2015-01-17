@@ -9,6 +9,7 @@
 
         this.removePlayer = function (id) {
             var user = document.getElementById(id);
+            if (user === null) return;
             arena.removeChild(user);
         };
 
