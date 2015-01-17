@@ -1,9 +1,9 @@
 ﻿define("Arena", function () {
     function Arena(arena) {
 
-        this.addPlayer = function (userList) {
-            for (var i = 0; i < userList.length; i++) {
-                createElement(userList[i]);
+        this.addPlayer = function (players) {
+            for (var i = 0; i < players.length; i++) {
+                createElement(players[i]);
             }
         };
 
@@ -19,12 +19,11 @@
             user.style.top  = y + "px";
         };
 
-        var createElement = function (id) {
-            id = id || "myself";
+        var createElement = function (player) {
             var indicator = document.createElement("div");
             indicator.style.cssText = "position:absolute;background-color:red;";
-            indicator.textContent = id;
-            indicator.id = id;
+            indicator.textContent = player.Id;
+            indicator.id = player.Id;
             arena.appendChild(indicator);
             return indicator;
         };
