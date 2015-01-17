@@ -30,10 +30,10 @@ namespace Arena.Hubs
 
             if (presentUsers != null)
             {
-                presentUsers.ForEach(u => Clients.Client(Context.ConnectionId).NewUser(u));
+                Clients.Client(Context.ConnectionId).NewUser(presentUsers);
             }
 
-            Clients.AllExcept(Context.ConnectionId).NewUser(Context.ConnectionId);
+            Clients.AllExcept(Context.ConnectionId).NewUser(new [] {Context.ConnectionId});
         }
 
         public void MoveUser(int x, int y)

@@ -31,7 +31,7 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
     $.connection.hub.start().done(function () {
         fightHub.server.register();
 
-        var indicator = arena.addPlayer("myself");
+        var indicator = arena.addPlayer(["myself"]);
         arenaElement.onmousedown = function () {
             fightHub.server.moveUser(event.clientX, event.clientY);
             arena.movePlayer("myself", event.clientX, event.clientY);

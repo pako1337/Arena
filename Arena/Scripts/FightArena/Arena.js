@@ -1,8 +1,10 @@
 ﻿define("Arena", function () {
     function Arena(arena) {
 
-        this.addPlayer = function (id) {
-            createElement(id);
+        this.addPlayer = function (userList) {
+            for (var i = 0; i < userList.length; i++) {
+                createElement(userList[i]);
+            }
         };
 
         this.removePlayer = function (id) {
