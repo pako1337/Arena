@@ -15,7 +15,7 @@ namespace Arena.Hubs
 
         public void Register()
         {
-            var newPlayer = new ArenaObject(Context.ConnectionId);
+            var newPlayer = new ArenaObject(Context.ConnectionId, new Vector2D(0, 0));
             List<ArenaObject> presentUsers = null;
             presentUsers = _users.Values.ToList();
             _users.TryAdd(Context.ConnectionId, newPlayer);

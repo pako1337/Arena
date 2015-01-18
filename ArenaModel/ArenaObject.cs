@@ -8,11 +8,13 @@ namespace ArenaModel
 {
     public class ArenaObject
     {        
-        public string Id { get; set; }
+        public string Id { get; private set; }
+        public Vector2D Position { get; private set; }
 
-        public ArenaObject(string id)
+        public ArenaObject(string id, Vector2D position)
         {
             Id = id;
+            Position = position;
         }
     }
 }

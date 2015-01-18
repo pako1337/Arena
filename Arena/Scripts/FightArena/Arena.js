@@ -21,13 +21,19 @@
         };
 
         var createElement = function (player) {
-            var indicator = document.createElement("div");
-            indicator.style.cssText = "position:absolute;background-color:red;";
-            indicator.textContent = player.Id;
-            indicator.id = player.Id;
-            arena.appendChild(indicator);
-            return indicator;
+            var playerToken = document.createElement("div");
+            playerToken.style.cssText = "position:absolute;background-color:red;";
+            playerToken.textContent = player.Id;
+            playerToken.id = player.Id;
+            setPosition(playerToken, player.Position.X, player.Position.Y);
+            arena.appendChild(playerToken);
+            return playerToken;
         };
+
+        function setPosition(element, x, y) {
+            element.style.left = x + "px";
+            element.style.top =  y + "px";
+        }
     };
 
     return Arena;
