@@ -8,16 +8,15 @@
         };
 
         this.removePlayer = function (id) {
-            var user = document.getElementById(id);
-            if (user === null) return;
-            arena.removeChild(user);
+            var playerToken = document.getElementById(id);
+            if (playerToken === null) return;
+            arena.removeChild(playerToken);
         };
 
         this.movePlayer = function (id, x, y) {
-            var user = document.getElementById(id);
-            if (user == undefined || user == null) return;
-            user.style.left = x + "px";
-            user.style.top  = y + "px";
+            var playerToken = document.getElementById(id);
+            if (playerToken == undefined || playerToken == null) return;
+            setPosition(playerToken, x, y);
         };
 
         var createElement = function (player) {
