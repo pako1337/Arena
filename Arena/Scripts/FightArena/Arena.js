@@ -13,10 +13,10 @@
             arena.removeChild(playerToken);
         };
 
-        this.movePlayer = function (id, x, y) {
+        this.updatePlayer = function (id, player) {
             var playerToken = document.getElementById(id);
             if (playerToken == undefined || playerToken == null) return;
-            setPosition(playerToken, x, y);
+            setPosition(playerToken, player.Position);
         };
 
         var createElement = function (player) {
@@ -24,14 +24,14 @@
             playerToken.style.cssText = "position:absolute;background-color:red;";
             playerToken.textContent = player.Id;
             playerToken.id = player.Id;
-            setPosition(playerToken, player.Position.X, player.Position.Y);
+            setPosition(playerToken, player.Position);
             arena.appendChild(playerToken);
             return playerToken;
         };
 
-        function setPosition(element, x, y) {
-            element.style.left = x + "px";
-            element.style.top =  y + "px";
+        var setPosition = function(element, position) {
+            element.style.left = position.X + "px";
+            element.style.top =  position.Y + "px";
         }
     };
 

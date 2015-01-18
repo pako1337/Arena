@@ -16,5 +16,10 @@ namespace ArenaModel
             Id = id;
             Position = position;
         }
+
+        public void Move(int x, int y)
+        {
+            Position.Move(x, y);
+        }
     }
 }

@@ -22,7 +22,7 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
 
     fightHub.client.newUser = arena.addPlayer;
     fightHub.client.userExit = arena.removePlayer;
-    fightHub.client.moveUser = arena.movePlayer;
+    fightHub.client.updatePlayer = arena.updatePlayer;
 
     window.onbeforeunload = function () {
         $.connection.hub.stop();

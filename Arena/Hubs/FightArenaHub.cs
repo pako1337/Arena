@@ -30,7 +30,12 @@ namespace Arena.Hubs
 
         public void MoveUser(int x, int y)
         {
-            Clients.All.MoveUser(Context.ConnectionId, x, y);
+            ArenaObject player;
+            if (_users.TryGetValue(Context.ConnectionId, out player))
+            {
+                player.Move(x, y);
+                Clients.All.UpdatePlayer(Context.ConnectionId, player);
+            }
         }
 
         public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)

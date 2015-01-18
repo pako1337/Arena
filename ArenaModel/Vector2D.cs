@@ -16,5 +16,11 @@ namespace ArenaModel
             X = x;
             Y = y;
         }
+
+        public void Move(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 }
