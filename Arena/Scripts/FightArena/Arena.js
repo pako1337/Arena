@@ -17,12 +17,16 @@
         };
 
         this.removePlayer = function (id) {
+            var player = self.players.filter(function (e) { return e.Id === id });
+            if (player.length == 0)
+                return;
+
+            var playerIndex = self.players.indexOf(player);
+            self.players.splice(playerIndex, 1);
         };
 
         this.updatePlayer = function (player) {
-            var playerToUpdate = self.players.filter(function (e) {
-                return e.Id === player.Id
-            });
+            var playerToUpdate = self.players.filter(function (e) { return e.Id === player.Id });
             if (playerToUpdate.length == 0)
                 return;
 
