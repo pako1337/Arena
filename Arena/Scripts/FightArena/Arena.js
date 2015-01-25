@@ -1,5 +1,7 @@
 ﻿define("Arena", function () {
-    function Arena(arena) {
+    function Arena(arenaDispaly) {
+        self = this;
+        self.arena = arenaDispaly.getContext("2d");
 
         this.addPlayer = function (players) {
             for (var i = 0; i < players.length; i++) {
@@ -20,19 +22,8 @@
         };
 
         var createElement = function (player) {
-            var playerToken = document.createElement("div");
-            playerToken.style.cssText = "position:absolute;background-color:red;";
-            playerToken.textContent = player.Id;
-            playerToken.id = player.Id;
-            setPosition(playerToken, player.Position);
-            arena.appendChild(playerToken);
-            return playerToken;
+            self.arena.fillRect(player.Position.X, player.Position.Y, 50, 50);            
         };
-
-        var setPosition = function(element, position) {
-            element.style.left = position.X + "px";
-            element.style.top =  position.Y + "px";
-        }
     };
 
     return Arena;
