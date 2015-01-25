@@ -40,7 +40,8 @@
         update: function() {
             this.arena.clearRect(0, 0, this.size.x, this.size.y);
             for (var i = 0; i < this.players.length; i++) {
-                this.arena.fillRect(this.players[i].Position.X, this.players[i].Position.Y, 50, 50);
+                var player = this.players[i];
+                this.arena.fillRect(player.Position.X, player.Position.Y, player.Size.X, player.Size.Y);
             }
         },
     }
