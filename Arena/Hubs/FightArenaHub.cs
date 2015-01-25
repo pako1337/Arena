@@ -34,7 +34,7 @@ namespace Arena.Hubs
             if (_users.TryGetValue(Context.ConnectionId, out player))
             {
                 player.Move(x, y);
-                Clients.All.UpdatePlayer(Context.ConnectionId, player);
+                Clients.All.UpdatePlayer(player);
             }
         }
 

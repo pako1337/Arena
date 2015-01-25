@@ -19,7 +19,14 @@
         this.removePlayer = function (id) {
         };
 
-        this.updatePlayer = function (id, player) {
+        this.updatePlayer = function (player) {
+            var playerToUpdate = self.players.filter(function (e) {
+                return e.Id === player.Id
+            });
+            if (playerToUpdate.length == 0)
+                return;
+
+            playerToUpdate[0].Position = player.Position;
         };
 
         tick();
