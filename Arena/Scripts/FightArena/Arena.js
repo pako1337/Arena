@@ -10,29 +10,6 @@
             requestAnimationFrame(tick);
         }
 
-        this.addPlayer = function (players) {
-            for (var i = 0; i < players.length; i++) {
-                self.players.push(players[i]);
-            }
-        };
-
-        this.removePlayer = function (id) {
-            var player = self.players.filter(function (e) { return e.Id === id });
-            if (player.length == 0)
-                return;
-
-            var playerIndex = self.players.indexOf(player);
-            self.players.splice(playerIndex, 1);
-        };
-
-        this.updatePlayer = function (player) {
-            var playerToUpdate = self.players.filter(function (e) { return e.Id === player.Id });
-            if (playerToUpdate.length == 0)
-                return;
-
-            playerToUpdate[0].Position = player.Position;
-        };
-
         tick();
     };
 
@@ -43,6 +20,29 @@
                 var player = this.players[i];
                 this.arena.fillRect(player.Position.X, player.Position.Y, player.Size.X, player.Size.Y);
             }
+        },
+
+        addPlayer: function (players) {
+            for (var i = 0; i < players.length; i++) {
+                this.players.push(players[i]);
+            }
+        },
+
+        removePlayer: function (id) {
+            var player = this.players.filter(function (e) { return e.Id === id });
+            if (player.length == 0)
+                return;
+
+            var playerIndex = this.players.indexOf(player);
+            this.players.splice(playerIndex, 1);
+        },
+
+        updatePlayer: function (player) {
+            var playerToUpdate = this.players.filter(function (e) { return e.Id === player.Id });
+            if (playerToUpdate.length == 0)
+                return;
+
+            playerToUpdate[0].Position = player.Position;
         },
     }
 
