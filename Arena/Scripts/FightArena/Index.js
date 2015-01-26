@@ -32,5 +32,10 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
         arenaElement.onmousedown = function () {
             fightHub.server.moveUser(event.offsetX, event.offsetY);
         };
+
+        document.getElementById("MarkAsReady").onclick = function () {
+            fightHub.server.markAsReady();
+            return false;
+        }
     });
 });

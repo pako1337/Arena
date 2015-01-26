@@ -11,10 +11,13 @@ namespace Arena.Hubs
 {
     public class FightArenaHub : Hub
     {
+        private static ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string,Player>();
         private static ConcurrentDictionary<string, ArenaObject> _users = new ConcurrentDictionary<string, ArenaObject>();
 
         public void Register()
         {
+            _players.AddOrUpdate(Context.ConnectionId, new Player(), (key, player) => player);
+
             var newPlayer = new ArenaObject(Context.ConnectionId, new Vector2D(0, 0), new Vector2D(10, 10));
             List<ArenaObject> presentUsers = null;
             presentUsers = _users.Values.ToList();
@@ -26,6 +29,15 @@ namespace Arena.Hubs
             }
 
             Clients.All.NewUser(new[] { newPlayer });
+        }
+
+        public void MarkAsReady()
+        {
+            Player player;
+            if (_players.TryGetValue(Context.ConnectionId, out player))
+            {
+                player.IsReady = true;
+            }
         }
 
         public void MoveUser(int x, int y)
