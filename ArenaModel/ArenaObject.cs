@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace ArenaModel
 {
     public class ArenaObject
-    {        
+    {
         public string Id { get; private set; }
         public Vector2D Position { get; private set; }
         public Vector2D Size { get; set; }
 
-        public ArenaObject(string id, Vector2D position, Vector2D size)
+        public ArenaObject(Vector2D position, Vector2D size)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             Position = position;
             Size = size;
         }

@@ -9,5 +9,7 @@ namespace ArenaModel
     public class Player
     {
         public bool IsReady { get; set; }
+
+        public ArenaObject PlayerToken { get; set; }
     }
 }
