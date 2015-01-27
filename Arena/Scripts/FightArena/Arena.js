@@ -38,11 +38,12 @@
         },
 
         updatePlayer: function (player) {
-            var playerToUpdate = this.players.filter(function (e) { return e.PlayerToken.Id === player.Id });
+            var playerToUpdate = this.players.filter(function (e) { return e.PlayerToken.Id === player.PlayerToken.Id });
             if (playerToUpdate.length == 0)
                 return;
 
-            playerToUpdate[0].PlayerToken.Position = player.Position;
+            var playerIndex = this.players.indexOf(playerToUpdate[0]);
+            this.players[playerIndex] = player;
         },
     }
 

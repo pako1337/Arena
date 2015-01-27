@@ -44,7 +44,7 @@ namespace Arena.Hubs
                     return;
 
                 player.PlayerToken.Move(x, y);
-                Clients.All.UpdatePlayer(player.PlayerToken);
+                Clients.All.UpdatePlayer(player);
             }
         }
 

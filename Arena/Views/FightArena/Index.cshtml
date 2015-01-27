@@ -2,12 +2,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script type="x-tmpl-mustache" id="PlayersListTemplate">
+    {{#players}}
+    <span class="{{#IsReady}}text-success{{/IsReady}}">{{PlayerToken.Id}}</span>
+    {{/players}}
+</script>
+
 <div style="border:solid red;width:500px;height:500px">
+    <div id="PlayersList">
+    </div>
     <canvas id="Arena" width="500" height="500"></canvas>
     <a id="MarkAsReady" href="?">Ready!</a>
 </div>
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/mustache")
     <script src="~/Scripts/require.js" data-main="/Scripts/FightArena/Index"></script>
 }

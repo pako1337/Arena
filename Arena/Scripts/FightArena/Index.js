@@ -20,9 +20,18 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
 
     arena = new Arena(arenaElement)
 
-    fightHub.client.newUser = function (p) { arena.addPlayer(p); };
-    fightHub.client.updatePlayer = function (p) { arena.updatePlayer(p); };
-    fightHub.client.userExit = function (id) { arena.removePlayer(id); };
+    fightHub.client.newUser = function (p) {
+        arena.addPlayer(p);
+        refreshPlayersList(arena);
+    };
+    fightHub.client.updatePlayer = function (p) {
+        arena.updatePlayer(p);
+        refreshPlayersList(arena);
+    };
+    fightHub.client.userExit = function (id) {
+        arena.removePlayer(id);
+        refreshPlayersList(arena);
+    };
 
     $.connection.hub.start().done(function () {
         window.onbeforeunload = function () { $.connection.hub.stop(); }
@@ -38,4 +47,10 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
             return false;
         }
     });
+
+    function refreshPlayersList(arena) {
+        var playersListTemplate = document.getElementById("PlayersListTemplate");
+        var playersList = Mustache.render(playersListTemplate.innerHTML, arena);
+        document.getElementById("PlayersList").innerHTML = playersList;
+    }
 });
