@@ -22,8 +22,8 @@ namespace Arena.Hubs
             
             _players.AddOrUpdate(Context.ConnectionId, player, (key, p) => p);
 
-            Clients.Client(Context.ConnectionId).NewUser(_players.Select(p => p.Value.PlayerToken));
-            Clients.AllExcept(Context.ConnectionId).NewUser(new[] { player.PlayerToken });
+            Clients.Client(Context.ConnectionId).NewUser(_players.Values);
+            Clients.AllExcept(Context.ConnectionId).NewUser(new[] { player });
         }
 
         public void MarkAsReady()
