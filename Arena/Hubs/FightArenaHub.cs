@@ -40,6 +40,9 @@ namespace Arena.Hubs
             Player player;
             if (_players.TryGetValue(Context.ConnectionId, out player))
             {
+                if (!player.IsReady)
+                    return;
+
                 player.PlayerToken.Move(x, y);
                 Clients.All.UpdatePlayer(player.PlayerToken);
             }
