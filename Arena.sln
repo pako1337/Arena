@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arena", "Arena\Arena.csproj", "{7BF73C1D-9C82-4FDD-9FD8-8E5F525CC8B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArenaUI", "Arena\ArenaUI.csproj", "{7BF73C1D-9C82-4FDD-9FD8-8E5F525CC8B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArenaModel", "ArenaModel\ArenaModel.csproj", "{0D34FB29-F7F9-43CD-B002-736ED2030CD9}"
 EndProject

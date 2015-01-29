@@ -5,9 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using Arena.Models;
+using ArenaUI.Models;
 
-namespace Arena
+namespace ArenaUI
 {
     public partial class Startup
     {

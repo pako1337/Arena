@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Arena.Startup))]
-namespace Arena
+[assembly: OwinStartupAttribute(typeof(ArenaUI.Startup))]
+namespace ArenaUI
 {
     public partial class Startup
     {

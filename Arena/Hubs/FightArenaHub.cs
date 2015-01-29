@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using ArenaModel;
 
-namespace Arena.Hubs
+namespace ArenaUI.Hubs
 {
     public class FightArenaHub : Hub
     {

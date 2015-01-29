@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace Arena
+namespace ArenaUI
 {
     public class BundleConfig
     {

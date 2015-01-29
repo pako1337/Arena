@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Arena.Models;
+using ArenaUI.Models;
 
-namespace Arena.Controllers
+namespace ArenaUI.Controllers
 {
     [Authorize]
     public class ManageController : Controller
