@@ -20,14 +20,18 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
 
     arena = new Arena(arenaElement);
     bindToHub(fightHub);
-
+    $.connection.hub.error(function (error) {
+        console.log('SignalR error: ' + error)
+    });
     $.connection.hub.start().done(function () {
         window.onbeforeunload = function () { $.connection.hub.stop(); };
 
         fightHub.server.register();
 
-        arenaElement.onmousedown = function () {
-            fightHub.server.moveUser(event.offsetX, event.offsetY);
+        arenaElement.onmousedown = function (e) {
+            var x = e.offsetX == undefined ? e.layerX : e.offsetX;
+            var y = e.offsetY == undefined ? e.layerY : e.offsetY;
+            fightHub.server.moveUser(x, y);
         };
 
         document.getElementById("MarkAsReady").onclick = function () {

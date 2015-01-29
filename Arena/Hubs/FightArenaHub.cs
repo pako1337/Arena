@@ -11,52 +11,35 @@ namespace ArenaUI.Hubs
 {
     public class FightArenaHub : Hub
     {
-        private static ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string,Player>();
+        private static Arena arena;
 
         public void Register()
         {
-            var player = new Player()
-            {
-                PlayerToken = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10))
-            };
-            
-            _players.AddOrUpdate(Context.ConnectionId, player, (key, p) => p);
+            if (arena == null)
+                arena = new Arena();
 
-            Clients.Client(Context.ConnectionId).NewUser(_players.Values);
+            var player = arena.RegisterPlayer(Context.ConnectionId);
+
+            Clients.Client(Context.ConnectionId).NewUser(arena.Players);
             Clients.AllExcept(Context.ConnectionId).NewUser(new[] { player });
         }
 
         public void MarkAsReady()
         {
-            Player player;
-            if (_players.TryGetValue(Context.ConnectionId, out player))
-            {
-                player.IsReady = true;
-                Clients.All.PlayerStatusChanged(player);
-            }
+            var player = arena.MarkPlayerAsReady(Context.ConnectionId);
+            Clients.All.PlayerStatusChanged(player);
         }
 
         public void MoveUser(int x, int y)
         {
-            Player player;
-            if (_players.TryGetValue(Context.ConnectionId, out player))
-            {
-                if (!player.IsReady)
-                    return;
-
-                player.PlayerToken.Move(x, y);
-                Clients.All.UpdatePlayer(player);
-            }
+            var player = arena.MoveUser(Context.ConnectionId, x, y);
+            Clients.All.UpdatePlayer(player);
         }
 
         public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
         {
-            if (_players.ContainsKey(Context.ConnectionId))
-            {
-                Player disconnectedPlayerObject;
-                _players.TryRemove(Context.ConnectionId, out disconnectedPlayerObject);
-                Clients.All.UserExit(disconnectedPlayerObject.PlayerToken.Id);
-            }
+            string tokenId = arena.RemovePlayer(Context.ConnectionId);
+            Clients.All.UserExit(tokenId);
 
             return base.OnDisconnected(stopCalled);
         }
