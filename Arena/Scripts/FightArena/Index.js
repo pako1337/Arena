@@ -26,12 +26,16 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
     };
     fightHub.client.updatePlayer = function (p) {
         arena.updatePlayer(p);
-        refreshPlayersList(arena);
     };
     fightHub.client.userExit = function (id) {
         arena.removePlayer(id);
         refreshPlayersList(arena);
     };
+
+    fightHub.client.playerStatusChanged = function (player) {
+        arena.updatePlayer(player);
+        refreshPlayersList(arena);
+    }
 
     $.connection.hub.start().done(function () {
         window.onbeforeunload = function () { $.connection.hub.stop(); }

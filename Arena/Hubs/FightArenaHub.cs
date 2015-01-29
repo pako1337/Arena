@@ -32,6 +32,7 @@ namespace Arena.Hubs
             if (_players.TryGetValue(Context.ConnectionId, out player))
             {
                 player.IsReady = true;
+                Clients.All.PlayerStatusChanged(player);
             }
         }
 
