@@ -8,13 +8,13 @@
         var tick = function () {
             self.update();
             requestAnimationFrame(tick);
-        }
+        };
 
         tick();
-    };
+    }
 
     Arena.prototype = {
-        update: function() {
+        update: function () {
             this.arena.clearRect(0, 0, this.size.x, this.size.y);
             for (var i = 0; i < this.players.length; i++) {
                 var player = this.players[i].PlayerToken;
@@ -29,8 +29,8 @@
         },
 
         removePlayer: function (id) {
-            var player = this.players.filter(function (e) { return e.PlayerToken.Id === id });
-            if (player.length == 0)
+            var player = this.players.filter(function (e) { return e.PlayerToken.Id === id; });
+            if (player.length === 0)
                 return;
 
             var playerIndex = this.players.indexOf(player);
@@ -38,14 +38,14 @@
         },
 
         updatePlayer: function (player) {
-            var playerToUpdate = this.players.filter(function (e) { return e.PlayerToken.Id === player.PlayerToken.Id });
-            if (playerToUpdate.length == 0)
+            var playerToUpdate = this.players.filter(function (e) { return e.PlayerToken.Id === player.PlayerToken.Id; });
+            if (playerToUpdate.length === 0)
                 return;
 
             var playerIndex = this.players.indexOf(playerToUpdate[0]);
             this.players[playerIndex] = player;
         },
-    }
+    };
 
     return Arena;
 });

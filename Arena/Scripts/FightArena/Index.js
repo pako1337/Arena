@@ -18,7 +18,7 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
     var fightHub = $.connection.fightArenaHub;
     var arenaElement = document.getElementById("Arena");
 
-    arena = new Arena(arenaElement)
+    arena = new Arena(arenaElement);
 
     fightHub.client.newUser = function (p) {
         arena.addPlayer(p);
@@ -35,10 +35,10 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
     fightHub.client.playerStatusChanged = function (player) {
         arena.updatePlayer(player);
         refreshPlayersList(arena);
-    }
+    };
 
     $.connection.hub.start().done(function () {
-        window.onbeforeunload = function () { $.connection.hub.stop(); }
+        window.onbeforeunload = function () { $.connection.hub.stop(); };
 
         fightHub.server.register();
 
@@ -49,7 +49,7 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
         document.getElementById("MarkAsReady").onclick = function () {
             fightHub.server.markAsReady();
             return false;
-        }
+        };
     });
 
     function refreshPlayersList(arena) {
