@@ -19,23 +19,7 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
     var arenaElement = document.getElementById("Arena");
 
     arena = new Arena(arenaElement);
-
-    fightHub.client.newUser = function (p) {
-        arena.addPlayer(p);
-        refreshPlayersList(arena);
-    };
-    fightHub.client.updatePlayer = function (p) {
-        arena.updatePlayer(p);
-    };
-    fightHub.client.userExit = function (id) {
-        arena.removePlayer(id);
-        refreshPlayersList(arena);
-    };
-
-    fightHub.client.playerStatusChanged = function (player) {
-        arena.updatePlayer(player);
-        refreshPlayersList(arena);
-    };
+    bindToHub(fightHub);
 
     $.connection.hub.start().done(function () {
         window.onbeforeunload = function () { $.connection.hub.stop(); };
@@ -51,6 +35,25 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
             return false;
         };
     });
+
+    function bindToHub(fightHub) {
+        fightHub.client.newUser = function (p) {
+            arena.addPlayer(p);
+            refreshPlayersList(arena);
+        };
+        fightHub.client.updatePlayer = function (p) {
+            arena.updatePlayer(p);
+        };
+        fightHub.client.userExit = function (id) {
+            arena.removePlayer(id);
+            refreshPlayersList(arena);
+        };
+
+        fightHub.client.playerStatusChanged = function (player) {
+            arena.updatePlayer(player);
+            refreshPlayersList(arena);
+        };
+    }
 
     function refreshPlayersList(arena) {
         var playersListTemplate = document.getElementById("PlayersListTemplate");
