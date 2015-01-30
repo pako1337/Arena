@@ -24,14 +24,22 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
         console.log('SignalR error: ' + error)
     });
     $.connection.hub.start().done(function () {
-        window.onbeforeunload = function () { $.connection.hub.stop(); };
+        window.onbeforeunload = function () {
+            $.connection.hub.stop();
+        };
 
         fightHub.server.register();
 
         arenaElement.onmousedown = function (e) {
-            var x = e.offsetX == undefined ? e.layerX : e.offsetX;
-            var y = e.offsetY == undefined ? e.layerY : e.offsetY;
-            fightHub.server.moveUser(x, y);
+            e = e || window.event;
+
+            var target = e.target || e.srcElement,
+            style = target.currentStyle || window.getComputedStyle(target, null),
+            rect = target.getBoundingClientRect(),
+            offsetX = e.clientX - rect.left,
+            offsetY = e.clientY - rect.top;
+
+            fightHub.server.moveUser(parseInt(offsetX), parseInt(offsetY));
         };
 
         document.getElementById("MarkAsReady").onclick = function () {
