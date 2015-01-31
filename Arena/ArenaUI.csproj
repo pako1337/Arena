@@ -189,6 +189,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\FightArena\Arena.js" />
+    <Content Include="Scripts\FightArena\ArenaController.js" />
     <Content Include="Scripts\FightArena\Index.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />

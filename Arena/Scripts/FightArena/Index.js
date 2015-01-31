@@ -14,12 +14,11 @@
     }
 });
 
-require(["signalr.hubs", "Arena"], function (_hub, Arena) {
+require(["signalr.hubs", "ArenaController"], function (_hub, ArenaController) {
     var fightHub = $.connection.fightArenaHub;
-    var arenaElement = document.getElementById("Arena");
+    var arenaController = new ArenaController(fightHub);
 
-    arena = new Arena(arenaElement);
-    bindToHub(fightHub);
+    arenaController.subscribe();
 
     $.connection.hub.error(function (error) {
         console.log('SignalR error: ' + error)
@@ -30,50 +29,6 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
             $.connection.hub.stop();
         };
 
-        fightHub.server.register();
-
-        arenaElement.onmousedown = arenaMouseDown;
-
-        document.getElementById("MarkAsReady").onclick = function () {
-            fightHub.server.markAsReady();
-            return false;
-        };
+        arenaController.connected();
     });
-
-    function bindToHub(fightHub) {
-        fightHub.client.newUser = function (p) {
-            arena.addPlayer(p);
-            refreshPlayersList(arena);
-        };
-        fightHub.client.updatePlayer = function (p) {
-            arena.updatePlayer(p);
-        };
-        fightHub.client.userExit = function (id) {
-            arena.removePlayer(id);
-            refreshPlayersList(arena);
-        };
-
-        fightHub.client.playerStatusChanged = function (player) {
-            arena.updatePlayer(player);
-            refreshPlayersList(arena);
-        };
-    }
-
-    function refreshPlayersList(arena) {
-        var playersListTemplate = document.getElementById("PlayersListTemplate");
-        var playersList = Mustache.render(playersListTemplate.innerHTML, arena);
-        document.getElementById("PlayersList").innerHTML = playersList;
-    }
-
-    function arenaMouseDown(e) {
-        e = e || window.event;
-
-        var target = e.target || e.srcElement,
-        style = target.currentStyle || window.getComputedStyle(target, null),
-        rect = target.getBoundingClientRect(),
-        offsetX = e.clientX - rect.left,
-        offsetY = e.clientY - rect.top;
-
-        fightHub.server.moveUser(parseInt(offsetX), parseInt(offsetY));
-    }
 });
