@@ -20,9 +20,11 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
 
     arena = new Arena(arenaElement);
     bindToHub(fightHub);
+
     $.connection.hub.error(function (error) {
         console.log('SignalR error: ' + error)
     });
+
     $.connection.hub.start().done(function () {
         window.onbeforeunload = function () {
             $.connection.hub.stop();
@@ -30,17 +32,7 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
 
         fightHub.server.register();
 
-        arenaElement.onmousedown = function (e) {
-            e = e || window.event;
-
-            var target = e.target || e.srcElement,
-            style = target.currentStyle || window.getComputedStyle(target, null),
-            rect = target.getBoundingClientRect(),
-            offsetX = e.clientX - rect.left,
-            offsetY = e.clientY - rect.top;
-
-            fightHub.server.moveUser(parseInt(offsetX), parseInt(offsetY));
-        };
+        arenaElement.onmousedown = arenaMouseDown;
 
         document.getElementById("MarkAsReady").onclick = function () {
             fightHub.server.markAsReady();
@@ -71,5 +63,17 @@ require(["signalr.hubs", "Arena"], function (_hub, Arena) {
         var playersListTemplate = document.getElementById("PlayersListTemplate");
         var playersList = Mustache.render(playersListTemplate.innerHTML, arena);
         document.getElementById("PlayersList").innerHTML = playersList;
+    }
+
+    function arenaMouseDown(e) {
+        e = e || window.event;
+
+        var target = e.target || e.srcElement,
+        style = target.currentStyle || window.getComputedStyle(target, null),
+        rect = target.getBoundingClientRect(),
+        offsetX = e.clientX - rect.left,
+        offsetY = e.clientY - rect.top;
+
+        fightHub.server.moveUser(parseInt(offsetX), parseInt(offsetY));
     }
 });
