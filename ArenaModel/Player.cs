@@ -8,8 +8,17 @@ namespace ArenaModel
 {
     public class Player
     {
-        public bool IsReady { get; set; }
-
+        public PlayerStatus Status { get; set; }
         public ArenaObject PlayerToken { get; set; }
+
+        public void MarkAsReady()
+        {
+            Status = PlayerStatus.Ready;
+        }
+
+        public bool CanMove()
+        {
+            return Status == PlayerStatus.Ready;
+        }
     }
 }

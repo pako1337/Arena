@@ -43,6 +43,7 @@
     <Compile Include="ArenaObject.cs" />
     <Compile Include="ArenaRepository.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vector2D.cs" />
   </ItemGroup>

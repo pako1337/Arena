@@ -35,7 +35,7 @@ namespace ArenaModel
             Player player;
             if (_players.TryGetValue(id, out player))
             {
-                player.IsReady = true;
+                player.MarkAsReady();
                 return player;
             }
 
@@ -47,10 +47,9 @@ namespace ArenaModel
             Player player;
             if (_players.TryGetValue(id, out player))
             {
-                if (!player.IsReady)
-                    return player;
+                if (player.CanMove())
+                    player.PlayerToken.Move(x, y);
 
-                player.PlayerToken.Move(x, y);
                 return player;
             }
 
