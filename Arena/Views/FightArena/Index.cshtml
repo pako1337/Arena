@@ -5,9 +5,7 @@
 <script type="x-tmpl-mustache" id="PlayersListTemplate">
     <ul class="list-unstyled">
         {{#players}}
-        <li>
-            <span class="{{#Status}}text-success{{/Status}}">{{PlayerToken.Id}} - {{Status}}</span>
-        </li>
+        <li>{{PlayerToken.Id}}<br/>{{Status}}</li>
         {{/players}}
     </ul>
 </script>
