@@ -17,7 +17,7 @@
         update: function () {
             this.arena.clearRect(0, 0, this.size.x, this.size.y);
             for (var i = 0; i < this.players.length; i++) {
-                var player = this.players[i].PlayerToken;
+                var player = this.players[i].Token;
                 this.arena.fillRect(player.Position.X, player.Position.Y, player.Size.X, player.Size.Y);
             }
         },
@@ -29,7 +29,7 @@
         },
 
         removePlayer: function (id) {
-            var player = this.players.filter(function (e) { return e.PlayerToken.Id === id; });
+            var player = this.players.filter(function (e) { return e.Token.Id === id; });
             if (player.length === 0)
                 return;
 
@@ -38,7 +38,7 @@
         },
 
         updatePlayer: function (player) {
-            var playerToUpdate = this.players.filter(function (e) { return e.PlayerToken.Id === player.PlayerToken.Id; });
+            var playerToUpdate = this.players.filter(function (e) { return e.Token.Id === player.Token.Id; });
             if (playerToUpdate.length === 0)
                 return;
 

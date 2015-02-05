@@ -15,11 +15,11 @@ namespace ArenaModel
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public PlayerStatus Status { get { return _currentState.Status; } }
-		public ArenaObject PlayerToken { get; private set; }
+		public ArenaObject Token { get; private set; }
 
 		public Player()
 		{
-			PlayerToken = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10));
+			Token = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10));
 			_currentState = new NotReadyState(this);
 		}
 

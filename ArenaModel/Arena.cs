@@ -60,7 +60,7 @@ namespace ArenaModel
                 Player disconnectedPlayerObject;
                 _players.TryRemove(id, out disconnectedPlayerObject);
 
-                return disconnectedPlayerObject.PlayerToken.Id;
+                return disconnectedPlayerObject.Token.Id;
             }
 
             throw new InvalidOperationException("Player with id " + id + " does not exist");

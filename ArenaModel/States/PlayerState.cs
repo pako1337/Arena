@@ -4,13 +4,13 @@ namespace ArenaModel.States
 {
 	internal abstract class PlayerState
 	{
-		private Player _player;
+		protected Player Player;
 
 		public abstract PlayerStatus Status { get; }
 
 		public PlayerState(Player player)
 		{
-			_player = player;
+			Player = player;
 		}
 
 		public virtual bool CanMove()
@@ -20,23 +20,6 @@ namespace ArenaModel.States
 
 		public virtual void Move(int x, int y) { }
 
-		public PlayerState ChangeState(PlayerStatus playerStatus)
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	internal class NotReadyState : PlayerState
-	{
-		public override PlayerStatus Status
-		{
-			get { return PlayerStatus.NotReady; }
-		}
-
-		public NotReadyState(Player player)
-			: base(player)
-		{
-
-		}
+		public abstract PlayerState ChangeState(PlayerStatus playerStatus);
 	}
 }
