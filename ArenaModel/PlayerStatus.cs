@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ArenaModel
 {
-    public enum PlayerStatus
-    {
-        NotReady = 0,
-        Ready
-    }
+	public enum PlayerStatus
+	{
+		Ready = 0,
+		DoingTurn
+	}
 }

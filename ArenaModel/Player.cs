@@ -20,7 +20,7 @@ namespace ArenaModel
 		public Player()
 		{
 			Token = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10));
-			_currentState = new NotReadyState(this);
+			_currentState = new Ready(this);
 		}
 
 		public bool IsReady()

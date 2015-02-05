@@ -48,9 +48,9 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="States\NotReadyState.cs" />
+    <Compile Include="States\DoingTurn.cs" />
     <Compile Include="States\PlayerState.cs" />
-    <Compile Include="States\ReadyState.cs" />
+    <Compile Include="States\Ready.cs" />
     <Compile Include="Vector2D.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,32 +2,26 @@
 
 namespace ArenaModel.States
 {
-	internal class ReadyState : PlayerState
+	internal class Ready : PlayerState
 	{
 		public override PlayerStatus Status
 		{
 			get { return PlayerStatus.Ready; }
 		}
 
-		public ReadyState(Player player)
+		public Ready(Player player)
 			: base(player)
 		{
 
 		}
 
-		public override bool CanMove()
-		{
-			return true;
-		}
-
 		public override void Move(int x, int y)
 		{
-			Player.Token.Move(x, y);
 		}
 
 		public override PlayerState NextState()
 		{
-			throw new NotImplementedException();
+			return new DoingTurn(Player);
 		}
 	}
 }
