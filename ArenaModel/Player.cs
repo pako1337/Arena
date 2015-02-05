@@ -23,6 +23,11 @@ namespace ArenaModel
 			_currentState = new NotReadyState(this);
 		}
 
+		public bool IsReady()
+		{
+			return Status == PlayerStatus.Ready;
+		}
+
 		public void MarkAsReady()
 		{
 			_currentState = _currentState.NextState();

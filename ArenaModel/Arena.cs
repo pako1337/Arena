@@ -69,5 +69,10 @@ namespace ArenaModel
 
 			throw new InvalidOperationException("Player with id " + id + " does not exist");
 		}
+
+		public bool RoundFinished()
+		{
+			return _players.Values.All(p => p.IsReady());
+		}
 	}
 }
