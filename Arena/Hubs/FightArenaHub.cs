@@ -20,6 +20,8 @@ namespace ArenaUI.Hubs
 
 			Clients.Client(Context.ConnectionId).NewUser(arena.Players);
 			Clients.AllExcept(Context.ConnectionId).NewUser(new[] { player });
+
+			StartNextTurnIfAvailable(arena);
 		}
 
 		public void MarkAsReady()
@@ -27,9 +29,7 @@ namespace ArenaUI.Hubs
 			var arena = _arenaRepository.GetArena();
 			var player = arena.MarkPlayerAsReady(Context.ConnectionId);
 			Clients.All.PlayerStatusChanged(player);
-
-			if (arena.RoundFinished())
-				Clients.All.RoundFinished();
+			StartNextTurnIfAvailable(arena);
 		}
 
 		public void MoveUser(int x, int y)
@@ -44,8 +44,18 @@ namespace ArenaUI.Hubs
 			var arena = _arenaRepository.GetArena();
 			string tokenId = arena.RemovePlayer(Context.ConnectionId);
 			Clients.All.UserExit(tokenId);
+			StartNextTurnIfAvailable(arena);
 
 			return base.OnDisconnected(stopCalled);
+		}
+
+		private void StartNextTurnIfAvailable(Arena arena)
+		{
+			if (arena.AdvanceRound())
+			{
+				Player current = arena.GetCurrentPlayer();
+				Clients.All.UpdatePlayer(current);
+			}
 		}
 	}
 }

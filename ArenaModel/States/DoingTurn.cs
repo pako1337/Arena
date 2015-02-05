@@ -29,7 +29,7 @@ namespace ArenaModel.States
 
 		public override PlayerState NextState()
 		{
-			throw new NotImplementedException();
+			return new Ready(Player);
 		}
 	}
 }

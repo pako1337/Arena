@@ -10,11 +10,12 @@ namespace ArenaModel
 	public class Arena
 	{
 		private ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string, Player>();
-		private ConcurrentQueue<string> _playOrder = new ConcurrentQueue<string>();
+		private ConcurrentQueue<Player> _playOrder = new ConcurrentQueue<Player>();
+		private ConcurrentQueue<Player> _finishedPlayers = new ConcurrentQueue<Player>();
 
 		public Guid Id { get; private set; }
 		public IEnumerable<Player> Players { get { return _players.Values; } }
-		public IEnumerable<string> PlayOrder { get { return _playOrder.ToList(); } }
+		public IEnumerable<Player> PlayOrder { get { return _playOrder.ToList(); } }
 
 		public Arena()
 		{
@@ -26,7 +27,7 @@ namespace ArenaModel
 			var player = new Player();
 
 			_players.TryAdd(id, player);
-			_playOrder.Enqueue(id);
+			_finishedPlayers.Enqueue(player);
 
 			return player;
 		}
@@ -34,7 +35,7 @@ namespace ArenaModel
 		public Player MarkPlayerAsReady(string id)
 		{
 			Player player;
-			if (_players.TryGetValue(id, out player))
+			if (_players.TryGetValue(id, out player) && player.Status == PlayerStatus.DoingTurn)
 			{
 				player.MarkAsReady();
 				return player;
@@ -70,9 +71,40 @@ namespace ArenaModel
 			throw new InvalidOperationException("Player with id " + id + " does not exist");
 		}
 
-		public bool RoundFinished()
+		public bool AdvanceRound()
 		{
-			return _players.Values.All(p => p.IsReady());
+			lock (_playOrder)
+			{
+				Player player;
+				if (_playOrder.Count > 0)
+				{
+					_playOrder.TryPeek(out player);
+					if (player.Status == PlayerStatus.DoingTurn)
+						return false;
+
+					_playOrder.TryDequeue(out player);
+					_finishedPlayers.Enqueue(player);
+				}
+
+				if (_playOrder.Count == 0)
+				{
+					while (_finishedPlayers.TryDequeue(out player))
+						_playOrder.Enqueue(player);
+				}
+
+				_playOrder.TryPeek(out player);
+				player.MarkAsReady();
+
+				return true;
+			}
+		}
+
+		public Player GetCurrentPlayer()
+		{
+			Player player;
+			_playOrder.TryPeek(out player);
+
+			return player;
 		}
 	}
 }
