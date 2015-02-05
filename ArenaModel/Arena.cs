@@ -20,10 +20,7 @@ namespace ArenaModel
 
         public Player RegisterPlayer(string id)
         {
-            var player = new Player()
-            {
-                PlayerToken = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10))
-            };
+            var player = new Player();
 
             _players.TryAdd(id, player);
 
@@ -48,7 +45,7 @@ namespace ArenaModel
             if (_players.TryGetValue(id, out player))
             {
                 if (player.CanMove())
-                    player.PlayerToken.Move(x, y);
+                    player.Move(x, y);
 
                 return player;
             }
