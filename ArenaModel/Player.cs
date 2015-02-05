@@ -3,35 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArenaModel.States;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace ArenaModel
 {
-    public class Player
-    {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public PlayerStatus Status { get; private set; }
-        public ArenaObject PlayerToken { get; private set; }
+	public class Player
+	{
+		private PlayerState _currentState;
 
-        public Player()
-        {
-            PlayerToken = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10));
-        }
+		[JsonConverter(typeof(StringEnumConverter))]
+		public PlayerStatus Status { get { return _currentState.Status; } }
+		public ArenaObject PlayerToken { get; private set; }
 
-        public void MarkAsReady()
-        {
-            Status = PlayerStatus.Ready;
-        }
+		public Player()
+		{
+			PlayerToken = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10));
+			_currentState = new NotReadyState(this);
+		}
 
-        public bool CanMove()
-        {
-            return Status == PlayerStatus.Ready;
-        }
+		public void MarkAsReady()
+		{
+			_currentState = _currentState.ChangeState(PlayerStatus.Ready);
+		}
 
-        internal void Move(int x, int y)
-        {
-            PlayerToken.Move(x, y);
-        }
-    }
+		public bool CanMove()
+		{
+			return _currentState.CanMove();
+		}
+
+		internal void Move(int x, int y)
+		{
+			_currentState.Move(x, y);
+		}
+	}
 }
