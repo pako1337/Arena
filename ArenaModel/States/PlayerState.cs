@@ -20,6 +20,6 @@ namespace ArenaModel.States
 
 		public virtual void Move(int x, int y) { }
 
-		public abstract PlayerState ChangeState(PlayerStatus playerStatus);
+		public abstract PlayerState NextState();
 	}
 }

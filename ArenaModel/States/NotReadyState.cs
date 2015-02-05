@@ -15,11 +15,8 @@ namespace ArenaModel.States
 
 		}
 
-		public override PlayerState ChangeState(PlayerStatus playerStatus)
+		public override PlayerState NextState()
 		{
-			if (playerStatus != PlayerStatus.Ready)
-				throw new InvalidOperationException();
-
 			return new ReadyState(Player);
 		}
 	}

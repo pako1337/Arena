@@ -25,7 +25,7 @@ namespace ArenaModel
 
 		public void MarkAsReady()
 		{
-			_currentState = _currentState.ChangeState(PlayerStatus.Ready);
+			_currentState = _currentState.NextState();
 		}
 
 		public bool CanMove()

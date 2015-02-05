@@ -25,7 +25,7 @@ namespace ArenaModel.States
 			Player.Token.Move(x, y);
 		}
 
-		public override PlayerState ChangeState(PlayerStatus playerStatus)
+		public override PlayerState NextState()
 		{
 			throw new NotImplementedException();
 		}

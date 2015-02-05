@@ -7,63 +7,67 @@ using System.Threading.Tasks;
 
 namespace ArenaModel
 {
-    public class Arena
-    {
-        private ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string, Player>();
-        public Guid Id { get; private set; }
-        public IEnumerable<Player> Players { get { return _players.Values; } }
+	public class Arena
+	{
+		private ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string, Player>();
+		private ConcurrentQueue<string> _playOrder = new ConcurrentQueue<string>();
 
-        public Arena()
-        {
-            Id = Guid.NewGuid();
-        }
+		public Guid Id { get; private set; }
+		public IEnumerable<Player> Players { get { return _players.Values; } }
+		public IEnumerable<string> PlayOrder { get { return _playOrder.ToList(); } }
 
-        public Player RegisterPlayer(string id)
-        {
-            var player = new Player();
+		public Arena()
+		{
+			Id = Guid.NewGuid();
+		}
 
-            _players.TryAdd(id, player);
+		public Player RegisterPlayer(string id)
+		{
+			var player = new Player();
 
-            return player;
-        }
+			_players.TryAdd(id, player);
+			_playOrder.Enqueue(id);
 
-        public Player MarkPlayerAsReady(string id)
-        {
-            Player player;
-            if (_players.TryGetValue(id, out player))
-            {
-                player.MarkAsReady();
-                return player;
-            }
+			return player;
+		}
 
-            throw new InvalidOperationException("Player with id " + id + " does not exist");
-        }
+		public Player MarkPlayerAsReady(string id)
+		{
+			Player player;
+			if (_players.TryGetValue(id, out player))
+			{
+				player.MarkAsReady();
+				return player;
+			}
 
-        public Player MoveUser(string id, int x, int y)
-        {
-            Player player;
-            if (_players.TryGetValue(id, out player))
-            {
-                if (player.CanMove())
-                    player.Move(x, y);
+			throw new InvalidOperationException("Player with id " + id + " does not exist");
+		}
 
-                return player;
-            }
+		public Player MoveUser(string id, int x, int y)
+		{
+			Player player;
+			if (_players.TryGetValue(id, out player))
+			{
+				if (player.CanMove())
+					player.Move(x, y);
 
-            throw new InvalidOperationException("Player with id " + id + " does not exist");
-        }
+				return player;
+			}
 
-        public string RemovePlayer(string id)
-        {
-            if (_players.ContainsKey(id))
-            {
-                Player disconnectedPlayerObject;
-                _players.TryRemove(id, out disconnectedPlayerObject);
+			throw new InvalidOperationException("Player with id " + id + " does not exist");
+		}
 
-                return disconnectedPlayerObject.Token.Id;
-            }
+		public string RemovePlayer(string id)
+		{
+			if (_players.ContainsKey(id))
+			{
+				Player disconnectedPlayerObject;
+				_players.TryRemove(id, out disconnectedPlayerObject);
 
-            throw new InvalidOperationException("Player with id " + id + " does not exist");
-        }
-    }
+				return disconnectedPlayerObject.Token.Id;
+			}
+
+			throw new InvalidOperationException("Player with id " + id + " does not exist");
+		}
+	}
 }
