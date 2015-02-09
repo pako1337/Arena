@@ -29,15 +29,19 @@ namespace ArenaModel
 			_players.TryAdd(id, player);
 			_finishedPlayers.Enqueue(player);
 
+			if (_players.Count == 1)
+				AdvanceRound();
+
 			return player;
 		}
 
 		public Player MarkPlayerAsReady(string id)
 		{
-			Player player;
-			if (_players.TryGetValue(id, out player) && player.Status == PlayerStatus.DoingTurn)
+			Player player = GetCurrentPlayer();
+			if (player.Id == id && player.Status == PlayerStatus.DoingTurn)
 			{
-				player.MarkAsReady();
+				player.NextState();
+				AdvanceRound();
 				return player;
 			}
 
@@ -65,6 +69,12 @@ namespace ArenaModel
 				Player disconnectedPlayerObject;
 				_players.TryRemove(id, out disconnectedPlayerObject);
 
+				if (GetCurrentPlayer().Id == id)
+				{
+					_playOrder.TryDequeue(out disconnectedPlayerObject);
+					AdvanceRound();
+				}
+
 				return disconnectedPlayerObject.Token.Id;
 			}
 
@@ -78,31 +88,43 @@ namespace ArenaModel
 				Player player;
 				if (_playOrder.Count > 0)
 				{
-					_playOrder.TryPeek(out player);
-					if (player.Status == PlayerStatus.DoingTurn)
-						return false;
-
 					_playOrder.TryDequeue(out player);
 					_finishedPlayers.Enqueue(player);
 				}
 
-				if (_playOrder.Count == 0)
+				if (RoundIsFinished())
 				{
-					while (_finishedPlayers.TryDequeue(out player))
-						_playOrder.Enqueue(player);
+					BuildNewRoundPlayOrder();
 				}
 
-				_playOrder.TryPeek(out player);
-				player.MarkAsReady();
+				player = GetCurrentPlayer();
+				player.NextState();
 
 				return true;
+			}
+		}
+
+		private bool RoundIsFinished()
+		{
+			return _playOrder.Count == 0;
+		}
+
+		private void BuildNewRoundPlayOrder()
+		{
+			Player player;
+			while (_finishedPlayers.TryDequeue(out player))
+			{
+				if (_players.ContainsKey(player.Id))
+					_playOrder.Enqueue(player);
 			}
 		}
 
 		public Player GetCurrentPlayer()
 		{
 			Player player;
-			_playOrder.TryPeek(out player);
+
+			while (_playOrder.TryPeek(out player) && !_players.ContainsKey(player.Id))
+				_playOrder.TryDequeue(out player);
 
 			return player;
 		}

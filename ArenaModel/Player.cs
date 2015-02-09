@@ -30,7 +30,7 @@ namespace ArenaModel
 			return Status == PlayerStatus.Ready;
 		}
 
-		public void MarkAsReady()
+		public void NextState()
 		{
 			_currentState = _currentState.NextState();
 		}
