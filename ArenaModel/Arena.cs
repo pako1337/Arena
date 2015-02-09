@@ -24,7 +24,7 @@ namespace ArenaModel
 
 		public Player RegisterPlayer(string id)
 		{
-			var player = new Player();
+			var player = new Player(id);
 
 			_players.TryAdd(id, player);
 			_finishedPlayers.Enqueue(player);

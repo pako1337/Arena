@@ -13,12 +13,14 @@ namespace ArenaModel
 	{
 		private PlayerState _currentState;
 
+		public string Id { get; private set; }
 		[JsonConverter(typeof(StringEnumConverter))]
 		public PlayerStatus Status { get { return _currentState.Status; } }
 		public ArenaObject Token { get; private set; }
 
-		public Player()
+		public Player(string id)
 		{
+			Id = id;
 			Token = new ArenaObject(new Vector2D(0, 0), new Vector2D(10, 10));
 			_currentState = new Ready(this);
 		}
