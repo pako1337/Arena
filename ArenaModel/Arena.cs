@@ -61,7 +61,7 @@ namespace ArenaModel
 			throw new InvalidOperationException("Player with id " + id + " does not exist");
 		}
 
-		public string RemovePlayer(string id)
+		public Player RemovePlayer(string id)
 		{
 			if (_players.ContainsKey(id))
 			{
@@ -77,7 +77,7 @@ namespace ArenaModel
 					AdvanceRound();
 				}
 
-				return disconnectedPlayerObject.Token.Id;
+				return disconnectedPlayerObject;
 			}
 
 			throw new InvalidOperationException("Player with id " + id + " does not exist");

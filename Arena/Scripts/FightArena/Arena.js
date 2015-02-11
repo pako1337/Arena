@@ -38,7 +38,7 @@
         },
 
         removePlayer: function (id) {
-            var player = this.players.filter(function (e) { return e.Token.Id === id; });
+            var player = this.players.filter(function (e) { return e.Id === id; });
             if (player.length === 0)
                 return;
 
@@ -47,7 +47,7 @@
         },
 
         updatePlayer: function (player) {
-            var playerToUpdate = this.players.filter(function (e) { return e.Token.Id === player.Token.Id; });
+            var playerToUpdate = this.players.filter(function (e) { return e.Id === player.Id; });
             if (playerToUpdate.length === 0)
                 return;
 

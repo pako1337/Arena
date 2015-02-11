@@ -39,8 +39,8 @@ namespace ArenaUI.Hubs
 		public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
 		{
 			var arena = _arenaRepository.GetArena();
-			string tokenId = arena.RemovePlayer(Context.ConnectionId);
-			Clients.All.UserExit(tokenId);
+			arena.RemovePlayer(Context.ConnectionId);
+			Clients.All.UserExit(Context.ConnectionId);
 			UpdateAllPlayers(arena);
 
 			return base.OnDisconnected(stopCalled);
