@@ -68,7 +68,10 @@ namespace ArenaModel
 				Player disconnectedPlayerObject;
 				_players.TryRemove(id, out disconnectedPlayerObject);
 
-				if (GetCurrentPlayer().Id == id)
+				var currentPlayer = GetCurrentPlayer();
+				if (currentPlayer == null)
+					AdvanceRound();
+				else if (currentPlayer.Id == id)
 				{
 					_playOrder.TryDequeue(out disconnectedPlayerObject);
 					AdvanceRound();

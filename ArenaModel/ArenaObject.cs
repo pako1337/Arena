@@ -6,22 +6,31 @@ using System.Threading.Tasks;
 
 namespace ArenaModel
 {
-    public class ArenaObject
-    {
-        public string Id { get; private set; }
-        public Vector2D Position { get; private set; }
-        public Vector2D Size { get; set; }
+	public class ArenaObject
+	{
+		private Stack<Vector2D> _movePath = new Stack<Vector2D>();
 
-        public ArenaObject(Vector2D position, Vector2D size)
-        {
-            Id = Guid.NewGuid().ToString();
-            Position = position;
-            Size = size;
-        }
+		public string Id { get; private set; }
+		public Vector2D Position { get; private set; }
+		public Vector2D Size { get; private set; }
+		public IEnumerable<Vector2D> MovePath { get { return _movePath.Reverse(); } }
 
-        public void Move(int x, int y)
-        {
-            Position.Move(x, y);
-        }
-    }
+		public ArenaObject(Vector2D position, Vector2D size)
+		{
+			Id = Guid.NewGuid().ToString();
+			Position = position;
+			Size = size;
+		}
+
+		public void AddMovePoint(int x, int y)
+		{
+			_movePath.Push(new Vector2D(x, y));
+		}
+
+		public void Move()
+		{
+			Position = _movePath.Pop();
+			_movePath.Clear();
+		}
+	}
 }

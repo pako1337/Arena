@@ -24,11 +24,12 @@ namespace ArenaModel.States
 
 		public override void Move(int x, int y)
 		{
-			Player.Token.Move(x, y);
+			Player.Token.AddMovePoint(x, y);
 		}
 
 		public override PlayerState NextState()
 		{
+			Player.Token.Move();
 			return new Ready(Player);
 		}
 	}
