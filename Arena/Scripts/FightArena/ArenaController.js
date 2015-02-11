@@ -10,8 +10,10 @@
                 refreshPlayersList(arena);
             };
 
-            fightHub.client.updatePlayer = function (player) {
-                arena.updatePlayer(player);
+            fightHub.client.updatePlayer = function (players) {
+                for (var i = 0; i < players.length; i++) {
+                    arena.updatePlayer(players[i]);
+                }
                 refreshPlayersList();
             };
 

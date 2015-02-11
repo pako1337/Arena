@@ -26,14 +26,14 @@ namespace ArenaUI.Hubs
 		{
 			var arena = _arenaRepository.GetArena();
 			var player = arena.MarkPlayerAsReady(Context.ConnectionId);
-			Clients.All.UpdatePlayer(player);
+			Clients.All.UpdatePlayer(new [] {player});
 		}
 
 		public void MoveUser(int x, int y)
 		{
 			var arena = _arenaRepository.GetArena();
 			var player = arena.MoveUser(Context.ConnectionId, x, y);
-			Clients.All.UpdatePlayer(player);
+			Clients.All.UpdatePlayer(new [] {player});
 		}
 
 		public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
