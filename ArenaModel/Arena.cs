@@ -15,7 +15,6 @@ namespace ArenaModel
 
 		public Guid Id { get; private set; }
 		public IEnumerable<Player> Players { get { return _players.Values; } }
-		public IEnumerable<Player> PlayOrder { get { return _playOrder.ToList(); } }
 
 		public Arena()
 		{
@@ -81,7 +80,7 @@ namespace ArenaModel
 			throw new InvalidOperationException("Player with id " + id + " does not exist");
 		}
 
-		public bool AdvanceRound()
+		private void AdvanceRound()
 		{
 			lock (_playOrder)
 			{
@@ -99,8 +98,6 @@ namespace ArenaModel
 
 				player = GetCurrentPlayer();
 				player.NextState();
-
-				return true;
 			}
 		}
 
@@ -119,7 +116,7 @@ namespace ArenaModel
 			}
 		}
 
-		public Player GetCurrentPlayer()
+		private Player GetCurrentPlayer()
 		{
 			Player player;
 
