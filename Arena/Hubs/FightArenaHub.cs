@@ -26,7 +26,7 @@ namespace ArenaUI.Hubs
 		{
 			var arena = _arenaRepository.GetArena();
 			var player = arena.MarkPlayerAsReady(Context.ConnectionId);
-			Clients.All.PlayerStatusChanged(player);
+			Clients.All.UpdatePlayer(player);
 		}
 
 		public void MoveUser(int x, int y)

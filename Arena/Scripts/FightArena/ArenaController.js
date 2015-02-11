@@ -12,15 +12,11 @@
 
             fightHub.client.updatePlayer = function (player) {
                 arena.updatePlayer(player);
+                refreshPlayersList();
             };
 
             fightHub.client.userExit = function (id) {
                 arena.removePlayer(id);
-                refreshPlayersList();
-            };
-
-            fightHub.client.playerStatusChanged = function (player) {
-                arena.updatePlayer(player);
                 refreshPlayersList();
             };
         }
