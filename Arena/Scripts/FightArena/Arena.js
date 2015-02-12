@@ -3,33 +3,83 @@
         this.arena = arenaDispaly.getContext("2d");
         this.size = { x: arenaDispaly.width, y: arenaDispaly.height };
         this.players = [];
+        this.animatingTurnEnded = false;
 
         var self = this;
-        var tick = function () {
-            self.update();
-            requestAnimationFrame(tick);
+
+        self.turnEnded = function () {
+            self.animatingTurnEnded = true;
+            self.startTime = window.performance.now();
         };
 
-        tick();
+        var update = function (time) {
+            self.arena.clearRect(0, 0, self.size.x, self.size.y);
+
+            var animationLength = 1000;
+            var animationPoint = 0;
+            if (self.animatingTurnEnded) {
+                animationPoint = time - self.startTime;
+                self.animatingTurnEnded = (animationPoint < animationLength);
+            }
+
+
+            for (var i = 0; i < self.players.length; i++) {
+                var player = self.players[i].Token;
+                var movePath = player.MovePath.slice();
+                movePath.unshift(player.Position);
+
+                var segmentDuration = animationLength / movePath.length;
+                var startIndex = animationPoint / segmentDuration;
+                startIndex = parseInt(startIndex);
+
+                startIndex = Math.min(startIndex, movePath.length - 1);
+                var endIndex = Math.min(startIndex + 1, movePath.length - 1);
+
+                var startPoint = movePath[startIndex];
+                var endPoint = movePath[endIndex];
+
+                var segmentProgress = (animationPoint % segmentDuration) / segmentDuration;
+
+                var currentPosition =
+                    {
+                        X: (endPoint.X - startPoint.X) * segmentProgress,
+                        Y: (endPoint.Y - startPoint.Y) * segmentProgress
+                    };
+
+                if (!isFinite(currentPosition.X))
+                    currentPosition.X = 0;
+                if (!isFinite(currentPosition.Y))
+                    currentPosition.Y = 0;
+
+                currentPosition =
+                    {
+                        X: startPoint.X + currentPosition.X,
+                        Y: startPoint.Y + currentPosition.Y,
+                    };
+
+                paintPlayer(currentPosition, player);
+            }
+
+            requestAnimationFrame(update);
+        };
+
+        var paintPlayer = function (position, player) {
+            self.arena.fillRect(position.X, position.Y, player.Size.X, player.Size.Y);
+
+            self.arena.strokeStyle = "#777";
+            self.arena.beginPath();
+            self.arena.moveTo(position.X, position.Y);
+            for (var j = 0; j < player.MovePath.length; j++) {
+                var pathPoint = player.MovePath[j];
+                self.arena.lineTo(pathPoint.X, pathPoint.Y);
+            }
+            self.arena.stroke();
+        }
+
+        requestAnimationFrame(update);
     }
 
     Arena.prototype = {
-        update: function () {
-            this.arena.clearRect(0, 0, this.size.x, this.size.y);
-            for (var i = 0; i < this.players.length; i++) {
-                var player = this.players[i].Token;
-                this.arena.fillRect(player.Position.X, player.Position.Y, player.Size.X, player.Size.Y);
-
-                this.arena.strokeStyle = "#777";
-                this.arena.beginPath();
-                this.arena.moveTo(player.Position.X, player.Position.Y);
-                for (var j = 0; j < player.MovePath.length; j++) {
-                    var pathPoint = player.MovePath[j];
-                    this.arena.lineTo(pathPoint.X, pathPoint.Y);
-                }
-                this.arena.stroke();
-            }
-        },
 
         addPlayer: function (players) {
             for (var i = 0; i < players.length; i++) {

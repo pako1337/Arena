@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArenaModel
 {
@@ -29,8 +27,8 @@ namespace ArenaModel
 
 		public void Move()
 		{
-			Position = _movePath.Pop();
-			_movePath.Clear();
+			//Position = _movePath.Pop();
+			//_movePath.Clear();
 		}
 	}
 }

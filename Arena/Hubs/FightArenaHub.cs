@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.SignalR;
-using System.Collections.Concurrent;
-using System.Threading;
+﻿using Microsoft.AspNet.SignalR;
 using ArenaModel;
 
 namespace ArenaUI.Hubs
@@ -25,7 +19,8 @@ namespace ArenaUI.Hubs
 		public void MarkAsReady()
 		{
 			var arena = _arenaRepository.GetArena();
-			var player = arena.MarkPlayerAsReady(Context.ConnectionId);
+			var turnEnded = arena.MarkPlayerAsReady(Context.ConnectionId);
+			Clients.All.TurnEnded();
 			UpdateAllPlayers(arena);
 		}
 

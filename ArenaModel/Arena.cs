@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArenaModel
 {
@@ -34,17 +31,17 @@ namespace ArenaModel
 			return player;
 		}
 
-		public Player MarkPlayerAsReady(string id)
+		public bool MarkPlayerAsReady(string id)
 		{
 			Player player = GetCurrentPlayer();
 			if (player.Id == id && player.Status == PlayerStatus.DoingTurn)
 			{
 				player.NextState();
 				AdvanceRound();
-				return player;
+				return true;
 			}
 
-			throw new InvalidOperationException("Player with id " + id + " does not exist");
+			return false;
 		}
 
 		public Player MoveUser(string id, int x, int y)

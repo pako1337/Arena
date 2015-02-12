@@ -21,6 +21,10 @@
                 arena.removePlayer(id);
                 refreshPlayersList();
             };
+
+            fightHub.client.turnEnded = function () {
+                arena.turnEnded();
+            }
         }
 
         this.connected = function () {
