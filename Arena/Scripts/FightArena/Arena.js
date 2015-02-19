@@ -57,20 +57,20 @@
                         Y: startPoint.Y + currentPosition.Y,
                     };
 
-                paintPlayer(currentPosition, player);
+                paintPlayer(currentPosition, player.Size, movePath.slice(startIndex+1));
             }
 
             requestAnimationFrame(update);
         };
 
-        var paintPlayer = function (position, player) {
-            self.arena.fillRect(position.X, position.Y, player.Size.X, player.Size.Y);
+        var paintPlayer = function (position, size, movePath) {
+            self.arena.fillRect(position.X, position.Y, size.X, size.Y);
 
             self.arena.strokeStyle = "#777";
             self.arena.beginPath();
             self.arena.moveTo(position.X, position.Y);
-            for (var j = 0; j < player.MovePath.length; j++) {
-                var pathPoint = player.MovePath[j];
+            for (var j = 0; j < movePath.length; j++) {
+                var pathPoint = movePath[j];
                 self.arena.lineTo(pathPoint.X, pathPoint.Y);
             }
             self.arena.stroke();
