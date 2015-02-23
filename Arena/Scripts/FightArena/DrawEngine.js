@@ -5,6 +5,7 @@
 
         var size = { width: arenaDisplay.width, height: arenaDisplay.height };
         var lastTime = 0;
+        var speed = 100;
 
         var self = this;
 
@@ -12,14 +13,7 @@
             if (lastTime === 0) lastTime = time;
             self.display.clearRect(0, 0, size.width, size.height);
 
-            var animationLength = 1000;
-            var speed = 10;
             var deltaT = time - lastTime;
-            var animationPoint = 0;
-            if (self.arena.animatingTurnEnded) {
-                animationPoint = time - self.arena.startTime;
-                self.arena.animatingTurnEnded = (animationPoint < animationLength);
-            }
 
             for (var i = 0; i < self.arena.players.length; i++) {
                 var player = self.arena.players[i].Token;
@@ -28,26 +22,34 @@
                     player.CurrentIndex = 0;
                 }
 
-                var currentPosition = player.CurrentPosition;
                 var endPoint = player.MovePath[player.CurrentIndex];
                 if (endPoint == undefined)
-                    endPoint = currentPosition;
+                    endPoint = player.CurrentPosition;
 
-                var xDistance = endPoint.X - currentPosition.X;
-                var yDistance = endPoint.Y - currentPosition.Y;
+                var xDistance = endPoint.X - player.CurrentPosition.X;
+                var yDistance = endPoint.Y - player.CurrentPosition.Y;
 
                 var moveLength = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 
                 var sin = yDistance / moveLength;
                 var cos = xDistance / moveLength;
 
-                currentPosition.X = currentPosition.X + speed * cos;
-                currentPosition.Y = currentPosition.Y + speed * sin;
+                player.CurrentPosition.X = player.CurrentPosition.X + speed * cos * deltaT / 1000;
+                player.CurrentPosition.Y = player.CurrentPosition.Y + speed * sin * deltaT / 1000;
 
-                paintPlayer(currentPosition, player.Size, player.MovePath.slice(player.CurrentIndex));
+                if (xDistance > 0 && player.CurrentPosition.X > endPoint.X ||
+                    xDistance < 0 && player.CurrentPosition.X < endPoint.X ||
+                    yDistance > 0 && player.CurrentPosition.Y > endPoint.Y ||
+                    yDistance < 0 && player.CurrentPosition.Y < endPoint.Y) {
+                    player.CurrentIndex++;
+                    player.CurrentPosition.X = endPoint.X;
+                    player.CurrentPosition.Y = endPoint.Y;
+                }
+
+                paintPlayer(player.CurrentPosition, player.Size, player.MovePath.slice(player.CurrentIndex));
             }
 
-            last = time;
+            lastTime = time;
             requestAnimationFrame(update);
         };
 
