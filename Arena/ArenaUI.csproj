@@ -193,6 +193,7 @@
     <Content Include="Scripts\FightArena\DrawEngine.js" />
     <Content Include="Scripts\FightArena\Index.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\FightArena\Vector.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />

@@ -1,4 +1,4 @@
-﻿define("DrawEngine", function () {
+﻿define("DrawEngine", ["Vector"], function (vector) {
     function DrawEngine(arenaDisplay, arena) {
         this.arena = arena;
         this.display = arenaDisplay.getContext("2d");
@@ -26,16 +26,10 @@
                 if (endPoint == undefined)
                     endPoint = player.CurrentPosition;
 
-                var distance =
-                    {
-                        X: endPoint.X - player.CurrentPosition.X,
-                        Y: endPoint.Y - player.CurrentPosition.Y
-                    };
-
+                var distance = vectorRemove(endPoint, player.CurrentPosition);
                 var moveDistance = calculateMoveDistance(distance, deltaT);
 
-                player.CurrentPosition.X = player.CurrentPosition.X + moveDistance.X;
-                player.CurrentPosition.Y = player.CurrentPosition.Y + moveDistance.Y;
+                player.CurrentPosition = vectorAdd(player.CurrentPosition, moveDistance);
 
                 if (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
                     pointPlayerToNextTarget(player, endPoint);
@@ -49,7 +43,7 @@
         };
 
         var calculateMoveDistance = function (distance, deltaT) {
-            var moveLength = Math.sqrt(distance.X * distance.X + distance.Y * distance.Y);
+            var moveLength = vectorLength(distance);
 
             var sin = distance.Y / moveLength;
             var cos = distance.X / moveLength;
@@ -70,14 +64,10 @@
         var pointPlayerToNextTarget = function (player, endPoint) {
             player.CurrentPosition.X = endPoint.X;
             player.CurrentPosition.Y = endPoint.Y;
-            while (endPoint && pointsAreEqual(player.CurrentPosition, endPoint)) {
+            while (endPoint && vectorsAreEqual(player.CurrentPosition, endPoint)) {
                 player.CurrentIndex++;
                 endPoint = player.MovePath[player.CurrentIndex];
             }
-        };
-
-        var pointsAreEqual = function (a, b) {
-            return a.X == b.X && a.Y == b.Y;
         };
 
         var paintPlayer = function (position, size, movePath) {
