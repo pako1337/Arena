@@ -17,30 +17,34 @@
 
             for (var i = 0; i < self.arena.players.length; i++) {
                 var player = self.arena.players[i].Token;
-                if (player.CurrentPosition === undefined) {
-                    player.CurrentPosition = player.Position;
-                    player.CurrentIndex = 0;
-                }
-
-                var endPoint = player.MovePath[player.CurrentIndex];
-                if (endPoint == undefined)
-                    endPoint = player.CurrentPosition;
-
-                var distance = vectorRemove(endPoint, player.CurrentPosition);
-                var moveDistance = calculateMoveDistance(distance, deltaT);
-
-                player.CurrentPosition = vectorAdd(player.CurrentPosition, moveDistance);
-
-                if (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
-                    pointPlayerToNextTarget(player, endPoint);
-                }
-
+                movePlayerToNewPosition(player, deltaT);
                 paintPlayer(player.CurrentPosition, player.Size, player.MovePath.slice(player.CurrentIndex));
             }
 
             lastTime = time;
             requestAnimationFrame(update);
         };
+
+        var movePlayerToNewPosition = function (player, deltaT) {
+            if (player.CurrentPosition === undefined) {
+                player.CurrentPosition = player.Position;
+                player.CurrentIndex = 0;
+            }
+
+            var endPoint = player.MovePath[player.CurrentIndex];
+            if (endPoint == undefined)
+                return;
+
+            var distance = vectorRemove(endPoint, player.CurrentPosition);
+            var moveDistance = calculateMoveDistance(distance, deltaT);
+
+            player.CurrentPosition = vectorAdd(player.CurrentPosition, moveDistance);
+
+            if (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
+                pointPlayerToNextTarget(player, endPoint);
+            }
+
+        }
 
         var calculateMoveDistance = function (distance, deltaT) {
             var moveLength = vectorLength(distance);
