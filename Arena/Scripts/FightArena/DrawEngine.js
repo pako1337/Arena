@@ -43,18 +43,17 @@
             if (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
                 pointPlayerToNextTarget(player, endPoint);
             }
-
         }
 
         var calculateMoveDistance = function (distance, deltaT) {
             var moveLength = vectorLength(distance);
-
             var sin = distance.Y / moveLength;
             var cos = distance.X / moveLength;
+            var normalSpeed = speed * deltaT / 1000;
 
             return {
-                X: speed * deltaT * cos / 1000,
-                Y: speed * deltaT * sin / 1000
+                X: cos * normalSpeed,
+                Y: sin * normalSpeed
             };
         };
 
