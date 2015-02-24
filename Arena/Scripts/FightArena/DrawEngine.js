@@ -1,4 +1,4 @@
-﻿define("DrawEngine", function() {
+﻿define("DrawEngine", function () {
     function DrawEngine(arenaDisplay, arena) {
         this.arena = arena;
         this.display = arenaDisplay.getContext("2d");
@@ -26,21 +26,21 @@
                 if (endPoint == undefined)
                     endPoint = player.CurrentPosition;
 
-                var xDistance = endPoint.X - player.CurrentPosition.X;
-                var yDistance = endPoint.Y - player.CurrentPosition.Y;
+                var distance =
+                    {
+                        X: endPoint.X - player.CurrentPosition.X,
+                        Y: endPoint.Y - player.CurrentPosition.Y
+                    };
 
-                var moveLength = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+                var moveLength = Math.sqrt(distance.X * distance.X + distance.Y * distance.Y);
 
-                var sin = yDistance / moveLength;
-                var cos = xDistance / moveLength;
+                var sin = distance.Y / moveLength;
+                var cos = distance.X / moveLength;
 
                 player.CurrentPosition.X = player.CurrentPosition.X + speed * cos * deltaT / 1000;
                 player.CurrentPosition.Y = player.CurrentPosition.Y + speed * sin * deltaT / 1000;
 
-                if (xDistance > 0 && player.CurrentPosition.X > endPoint.X ||
-                    xDistance < 0 && player.CurrentPosition.X < endPoint.X ||
-                    yDistance > 0 && player.CurrentPosition.Y > endPoint.Y ||
-                    yDistance < 0 && player.CurrentPosition.Y < endPoint.Y) {
+                while (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
                     player.CurrentIndex++;
                     player.CurrentPosition.X = endPoint.X;
                     player.CurrentPosition.Y = endPoint.Y;
@@ -53,6 +53,13 @@
             requestAnimationFrame(update);
         };
 
+        var hasReachedEnd = function (distance, currentPosition, endPoint) {
+            return distance.X > 0 && currentPosition.X > endPoint.X ||
+                   distance.X < 0 && currentPosition.X < endPoint.X ||
+                   distance.Y > 0 && currentPosition.Y > endPoint.Y ||
+                   distance.Y < 0 && currentPosition.Y < endPoint.Y;
+        };
+
         var paintPlayer = function (position, size, movePath) {
             self.display.fillRect(position.X, position.Y, size.X, size.Y);
             self.display.strokeStyle = "#777";
@@ -63,7 +70,7 @@
                 self.display.lineTo(pathPoint.X, pathPoint.Y);
             }
             self.display.stroke();
-        }
+        };
 
         requestAnimationFrame(update);
     }
