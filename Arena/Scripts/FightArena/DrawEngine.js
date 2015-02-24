@@ -40,10 +40,8 @@
                 player.CurrentPosition.X = player.CurrentPosition.X + speed * cos * deltaT / 1000;
                 player.CurrentPosition.Y = player.CurrentPosition.Y + speed * sin * deltaT / 1000;
 
-                while (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
-                    player.CurrentIndex++;
-                    player.CurrentPosition.X = endPoint.X;
-                    player.CurrentPosition.Y = endPoint.Y;
+                if (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
+                    pointPlayerToNextTarget(player, endPoint);
                 }
 
                 paintPlayer(player.CurrentPosition, player.Size, player.MovePath.slice(player.CurrentIndex));
@@ -54,11 +52,24 @@
         };
 
         var hasReachedEnd = function (distance, currentPosition, endPoint) {
-            return distance.X > 0 && currentPosition.X > endPoint.X ||
-                   distance.X < 0 && currentPosition.X < endPoint.X ||
-                   distance.Y > 0 && currentPosition.Y > endPoint.Y ||
-                   distance.Y < 0 && currentPosition.Y < endPoint.Y;
+            return distance.X >= 0 && currentPosition.X >= endPoint.X ||
+                   distance.X <= 0 && currentPosition.X <= endPoint.X ||
+                   distance.Y >= 0 && currentPosition.Y >= endPoint.Y ||
+                   distance.Y <= 0 && currentPosition.Y <= endPoint.Y;
         };
+
+        var pointPlayerToNextTarget = function (player, endPoint) {
+            player.CurrentPosition.X = endPoint.X;
+            player.CurrentPosition.Y = endPoint.Y;
+            while (endPoint && pointsAreEqual(player.CurrentPosition, endPoint)) {
+                player.CurrentIndex++;
+                endPoint = player.MovePath[player.CurrentIndex];
+            }
+        };
+
+        var pointsAreEqual = function (a, b) {
+            return a.X == b.X && a.Y == b.Y;
+        }
 
         var paintPlayer = function (position, size, movePath) {
             self.display.fillRect(position.X, position.Y, size.X, size.Y);
