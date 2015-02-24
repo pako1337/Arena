@@ -32,13 +32,10 @@
                         Y: endPoint.Y - player.CurrentPosition.Y
                     };
 
-                var moveLength = Math.sqrt(distance.X * distance.X + distance.Y * distance.Y);
+                var moveDistance = calculateMoveDistance(distance, deltaT);
 
-                var sin = distance.Y / moveLength;
-                var cos = distance.X / moveLength;
-
-                player.CurrentPosition.X = player.CurrentPosition.X + speed * cos * deltaT / 1000;
-                player.CurrentPosition.Y = player.CurrentPosition.Y + speed * sin * deltaT / 1000;
+                player.CurrentPosition.X = player.CurrentPosition.X + moveDistance.X;
+                player.CurrentPosition.Y = player.CurrentPosition.Y + moveDistance.Y;
 
                 if (hasReachedEnd(distance, player.CurrentPosition, endPoint)) {
                     pointPlayerToNextTarget(player, endPoint);
@@ -49,6 +46,18 @@
 
             lastTime = time;
             requestAnimationFrame(update);
+        };
+
+        var calculateMoveDistance = function (distance, deltaT) {
+            var moveLength = Math.sqrt(distance.X * distance.X + distance.Y * distance.Y);
+
+            var sin = distance.Y / moveLength;
+            var cos = distance.X / moveLength;
+
+            return {
+                X: speed * deltaT * cos / 1000,
+                Y: speed * deltaT * sin / 1000
+            };
         };
 
         var hasReachedEnd = function (distance, currentPosition, endPoint) {
@@ -69,7 +78,7 @@
 
         var pointsAreEqual = function (a, b) {
             return a.X == b.X && a.Y == b.Y;
-        }
+        };
 
         var paintPlayer = function (position, size, movePath) {
             self.display.fillRect(position.X, position.Y, size.X, size.Y);
