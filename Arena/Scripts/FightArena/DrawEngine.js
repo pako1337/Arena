@@ -2,6 +2,7 @@
     function DrawEngine(arenaDisplay, arena) {
         this.arena = arena;
         this.display = arenaDisplay.getContext("2d");
+        this.animatingTurnEnded = false;
 
         var size = { width: arenaDisplay.width, height: arenaDisplay.height };
         var lastTime = 0;
@@ -32,7 +33,7 @@
             }
 
             var endPoint = player.MovePath[player.CurrentIndex];
-            if (endPoint == undefined)
+            if (!self.animatingTurnEnded || !endPoint)
                 return;
 
             var distance = vectorRemove(endPoint, player.CurrentPosition);

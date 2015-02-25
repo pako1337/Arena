@@ -1,13 +1,12 @@
 ﻿define("Arena", ["DrawEngine"], function (DrawEngine) {
     function Arena(arenaDispaly) {
         this.players = [];
-        this.animatingTurnEnded = false;
 
         var drawEngine = new DrawEngine(arenaDispaly, this);
         var self = this;
 
         self.turnEnded = function () {
-            self.animatingTurnEnded = true;
+            drawEngine.animatingTurnEnded = true;
             self.startTime = window.performance.now();
         };
     }
