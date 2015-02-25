@@ -75,7 +75,9 @@
         };
 
         var paintPlayer = function (position, size, movePath) {
-            self.display.fillRect(position.X, position.Y, size.X, size.Y);
+            self.display.fillRect(position.X - size.X / 2,
+                                  position.Y - size.Y / 2,
+                                  size.X, size.Y);
             self.display.strokeStyle = "#777";
             self.display.beginPath();
             self.display.moveTo(position.X, position.Y);
